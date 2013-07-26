@@ -180,8 +180,7 @@ loadImageFromUrl = function()
     renderImage();
 
     // Move them over so we can see them
-    imageShape.x = 0;
-    imageShape.x = 0;
+    updateImage();
 
     stage.update();
 }

@@ -15,6 +15,7 @@ if (Meteor.isClient) {
     {
         setupEasel();
 
+        // update global bool when checkbox changes
         $('#connectPoints:checkbox').change(
             function(e){
 
@@ -27,6 +28,11 @@ if (Meteor.isClient) {
                 }
             }
         );
+
+        // all elements in this form autosave after page refresh
+        // https://github.com/jas-/jQuery.handleStorage/
+        $('#imageStuff').handleStorage();
+
     };
 
 }

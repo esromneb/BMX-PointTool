@@ -14,6 +14,19 @@ if (Meteor.isClient) {
     Template.canvas.rendered = function()
     {
         setupEasel();
+
+        $('#connectPoints:checkbox').change(
+            function(e){
+
+                if ($(this).attr("checked")) {
+                    connectPoints = true;
+                }
+                else
+                {
+                    connectPoints = false;
+                }
+            }
+        );
     };
 
 }

@@ -1,3 +1,7 @@
+connectPoints = true;
+pointArray = [];
+pointObjectArray = [];
+
 
 
 setupEasel = function() {
@@ -11,15 +15,20 @@ setupEasel = function() {
 
 
 
-    if( true )
-    {
-        stage.onMouseMove = function(evt) {
-            //
-            $('#mouseCoords').html('x: ' + evt.stageX + ' y: ' + evt.stageY);
+    stage.onMouseMove = function(evt) {
+        //
+        $('#mouseCoords').html('x: ' + evt.stageX + ' y: ' + evt.stageY);
 
 
-        };
-    }
+    };
+
+
+
+    // why is this jquery? onClick wasn't working for stage?
+    $("#testCanvas").click(handleStageClick);
+
+
+    $('#mouseCoords').html('move your mouse...');
 //
 //    if( debugHitBox )
 //    {
@@ -33,26 +42,59 @@ setupEasel = function() {
 //    }
 
 
-//
-//
-//    // makeLine();
-//
-//    // makeCircle();
-//    var waitingForGameCollection = setInterval(function(){
-//        if((Session.get('gameID') !== null) && Games.findOne({_id: Session.get('gameID')}) && Games.findOne({_id: Session.get('gameID')}).t0){
-//            clearInterval(waitingForGameCollection);
-//            console.log("Game terrain ready!");
-//            restartGame();
-//            // call update on the stage to make it render the current display list to the canvas:
-//            stage.update();
-//        }
-//    }, 500);
-//
-//
-//    //setTimeout(restartGame, 500);
-//
-//    //FIXME: david said use Meteor.autorun instead, https://github.com/esromneb/bit-tank/issues/2
-//    setTimeout(measureServerTime(), 250);
-//
+};
+
+
+var handleStageClick = function(e)
+{
+
+
+        var x = e.pageX-$("#testCanvas").offset().left;
+        var y = e.pageY-$("#testCanvas").offset().top;
+
+        console.log('x: ' + x + ' y: ' + y);
+
+        addPoint(x,y);
+
+        stage.update();
+
 
 };
+
+function addPoint(x,y)
+{
+    // create graphics object
+    var p = pointObjectArray[getPoint()];
+
+    // position it
+    p.x = x;
+    p.y = y;
+
+    // add to tracking array
+    pointArray.push([x,y]);
+}
+
+function getPoint() {
+
+//    var i = 0;
+    var len = pointObjectArray.length;
+
+    pointObjectArray[len] = new createjs.Shape();
+
+    stylePoint(pointObjectArray[len], null);
+
+    stage.addChild(pointObjectArray[len]);
+
+    // post increment after return
+    return len++;
+}
+
+function stylePoint(p, options)
+{
+    var g = p.graphics;
+    options = options || {'color':'#f00', 'size':2};
+
+    g.beginStroke(options.color);
+
+    g.drawCircle(0, 0, options.size);
+}

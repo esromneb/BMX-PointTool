@@ -54,10 +54,14 @@ var handleStageClick = function(e)
 
         console.log('x: ' + x + ' y: ' + y);
 
+        // add point to stage and to array
         addPoint(x,y);
 
+        // render canvas
         stage.update();
 
+        // update dom point list
+        updatePointsListDom();
 
 };
 
@@ -72,6 +76,17 @@ function addPoint(x,y)
 
     // add to tracking array
     pointArray.push([x,y]);
+
+
+    // optionally draw line to connect
+    if( pointObjectArray.length > 1 )
+    {
+        // pp is previous point
+        var pp = pointObjectArray[pointObjectArray.length-2];
+
+        // draw line from previous point to x,y but we need to subtract the current location of pp
+        pp.graphics.lineTo((x-pp.x),(y-pp.y));
+    }
 }
 
 function getPoint() {
@@ -92,9 +107,14 @@ function getPoint() {
 function stylePoint(p, options)
 {
     var g = p.graphics;
-    options = options || {'color':'#f00', 'size':2};
+    options = options || {'color':'#f00', 'size':1};
 
     g.beginStroke(options.color);
 
     g.drawCircle(0, 0, options.size);
+}
+
+function updatePointsListDom()
+{
+    $('#pointList').html(JSON.stringify(pointArray));
 }

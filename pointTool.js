@@ -54,18 +54,39 @@ var handleStageClick = function(e)
 
         console.log('x: ' + x + ' y: ' + y);
 
-        // add point to stage and to array
-        addPoint(x,y);
+        // add point to stage
+        addGraphicsPoint(x,y);
+
+        // add to tracking array
+        pointArray.push([x,y]);
 
         // render canvas
         stage.update();
+
 
         // update dom point list
         updatePointsListDom();
 
 };
 
-function addPoint(x,y)
+function reRenderPoints()
+{
+//    console.log('rerendering');
+    stage.clear();
+    stage.removeAllChildren();
+    pointObjectArray = [];
+
+    for( var i in pointArray )
+    {
+        var p = pointArray[i];
+
+        addGraphicsPoint(p[0], p[1]);
+    }
+
+    stage.update();
+}
+
+function addGraphicsPoint(x,y)
 {
     // create graphics object
     var p = pointObjectArray[getPoint()];
@@ -74,18 +95,18 @@ function addPoint(x,y)
     p.x = x;
     p.y = y;
 
-    // add to tracking array
-    pointArray.push([x,y]);
+//    console.log('length: ' + pointObjectArray.length);
 
 
     // optionally draw line to connect
-    if( pointObjectArray.length > 1 )
+    if( connectPoints && pointObjectArray.length > 1 )
     {
         // pp is previous point
         var pp = pointObjectArray[pointObjectArray.length-2];
 
         // draw line from previous point to x,y but we need to subtract the current location of pp
         pp.graphics.lineTo((x-pp.x),(y-pp.y));
+
     }
 }
 
@@ -112,9 +133,23 @@ function stylePoint(p, options)
     g.beginStroke(options.color);
 
     g.drawCircle(0, 0, options.size);
+
 }
 
 function updatePointsListDom()
 {
     $('#pointList').html(JSON.stringify(pointArray));
+}
+
+deleteLastPoint = function ()
+{
+//    console.log('delete');
+    var p = pointArray.pop();
+
+    console.log('deleted point: ' + p[0] + ', ' + p[1]);
+    reRenderPoints();
+
+    // update dom point list
+    updatePointsListDom();
+
 }

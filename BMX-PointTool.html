@@ -27,14 +27,17 @@
 
 <template name="controls">
     <div class="span1"></div>
-    <div class="span6">
+    <div class="span5">
         <div class="row">
             <div id='mouseCoords'></div>
 
             <input type="checkbox" id="connectPoints" checked="checked">Connect points?
         </div>
     </div>
-    <div class="3"><textarea rows="10" cols="50" id="pointList">[]</textarea></div>
+    <div class="span1">
+        <a class="btn btn-primary" id="deleteButton" onClick="deleteLastPoint()">Delete</a>
+    </div>
+    <div class="span3"><textarea rows="10" cols="50" id="pointList">[]</textarea></div>
 
 
 </template>

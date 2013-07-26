@@ -153,7 +153,22 @@ function stylePoint(p, options)
 
 function updatePointsListDom()
 {
-    $('#pointList').html(JSON.stringify(pointArray));
+    // use val NOT html
+    $('#pointList').val(JSON.stringify(pointArray));
+}
+
+parsePointsListFromDom = function()
+{
+    var string = $('#pointList').val();
+
+    try{
+        pointArray = JSON.parse(string);
+        reRenderPoints();
+    }catch(e)
+    {
+        console.log('something is wrong with your point array.  try jsonlint.com');
+        return;
+    }
 }
 
 deleteLastPoint = function ()
@@ -202,7 +217,7 @@ updateImage = function()
         console.log('something is wrong with your image properties.  try jsonlint.com');
         return;
     }
-    console.log(o);
+//    console.log(o);
 
     imageShape.x = o.x;
     imageShape.y = o.y;

@@ -31,7 +31,11 @@
         <div class="row">
             <div id='mouseCoords'></div>
 
-            <input type="checkbox" id="connectPoints" checked="checked">Connect points?
+            <input type="checkbox" id="connectPoints" checked="checked">Connect points?<br><br>
+            <fieldset>
+            <input type="text" id="imageUrl" placeholder="load image from url..."><a class="btn btn-primary" onClick="loadImageFromUrl()">Load</a><br>
+            <input type="text" id="imageProperties" value='{"x":0,"y":0,"scale":1.0}' onchange="updateImage()">
+            </fieldset>
         </div>
     </div>
     <div class="span1">

@@ -1,7 +1,14 @@
+// variables or settings
 connectPoints = true;
+imageUrl = null;
 pointArray = [];
-pointObjectArray = [];
 
+
+
+
+// easeljs handles
+imageShape = null;
+pointObjectArray = [];
 
 
 setupEasel = function() {
@@ -69,11 +76,17 @@ var handleStageClick = function(e)
 
 };
 
+
+// redraws the scene
 function reRenderPoints()
 {
 //    console.log('rerendering');
     stage.clear();
     stage.removeAllChildren();
+
+    // add the image first (so it's backgrounded) if present
+    renderImage();
+
     pointObjectArray = [];
 
     for( var i in pointArray )
@@ -82,6 +95,8 @@ function reRenderPoints()
 
         addGraphicsPoint(p[0], p[1]);
     }
+
+
 
     stage.update();
 }
@@ -152,4 +167,47 @@ deleteLastPoint = function ()
     // update dom point list
     updatePointsListDom();
 
+}
+
+loadImageFromUrl = function()
+{
+
+    imageUrl = $('#imageUrl').val();
+
+    imageShape = new createjs.Bitmap(imageUrl);
+//    bmp.mask = mask;
+
+    renderImage();
+
+    // Move them over so we can see them
+    imageShape.x = 0;
+    imageShape.x = 0;
+
+    stage.update();
+}
+
+var renderImage = function()
+{
+    if( imageShape )
+        stage.addChild(imageShape);
+}
+
+updateImage = function()
+{
+    var props = $('#imageProperties').val();
+    var o;
+    try{
+        o = JSON.parse(props);
+    }catch(e)
+    {
+        console.log('something is wrong with your image properties.  try jsonlint.com');
+        return;
+    }
+    console.log(o);
+
+    imageShape.x = o.x;
+    imageShape.y = o.y;
+    imageShape.scaleX = imageShape.scaleY = o.scale;
+
+    reRenderPoints();
 }

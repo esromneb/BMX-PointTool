@@ -33,6 +33,11 @@ if (Meteor.isClient) {
         // https://github.com/jas-/jQuery.handleStorage/
         $('#imageStuff').handleStorage();
 
+        // setting tight interval here because point array list doesn't get insta-saved when new lines added to canvas
+        // this is because pointList textarea doesn't get a blur event
+        $('#pointArrayForm').handleStorage({interval:3000});
+
+
     };
 
 }

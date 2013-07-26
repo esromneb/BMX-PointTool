@@ -3,11 +3,28 @@
 </head>
 
 <body>
-  {{> hello}}
+{{#isolate}}
+{{#constant}}
+{{> canvas}}
+{{/constant}}
+{{/isolate}}
+{{> controls}}
+
 </body>
 
 <template name="hello">
   <h1>Hello World!</h1>
   {{greeting}}
   <input type="button" value="Click" />
+</template>
+
+<template name="canvas">
+    <div class="canvasHolder">
+        <canvas id="testCanvas" width="960" height="400"></canvas>
+    </div>
+</template>
+
+
+<template name="controls">
+    <div id='mouseCoords'></div>
 </template>

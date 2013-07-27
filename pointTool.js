@@ -96,9 +96,21 @@ function reRenderPoints()
         addGraphicsPoint(p[0], p[1]);
     }
 
-
+//    lineSegmentApprox(pointArray);
 
     stage.update();
+}
+
+
+// draws a blue line that is not saved and will be cleared with the stage
+debugLine = function(x1,y1,x2,y2)
+{
+    var l = new createjs.Shape();
+    l.graphics.beginStroke('#00f');
+    l.graphics.moveTo(x1,y1);
+    l.graphics.lineTo(x2,y2);
+
+    stage.addChild(l);
 }
 
 function addGraphicsPoint(x,y)

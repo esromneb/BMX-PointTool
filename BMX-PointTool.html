@@ -32,12 +32,14 @@
             <div id='mouseCoords'></div>
 
             <input type="checkbox" id="connectPoints" checked="checked">Connect points?<br><br>
+            <div class="thin-border">
             <form id="imageStuff">
 
             <input type="text" id="imageUrl" name="imageUrl" placeholder="load image from url..."><a class="btn btn-primary" onClick="loadImageFromUrl()">Load</a><br>
             <input type="text" id="imageProperties" name="imageProperties" value='{"x":0,"y":0,"scale":1.0}' onchange="updateImage()">
 
             </form>
+            </div>
         </div>
     </div>
     <div class="span1">
@@ -49,6 +51,17 @@
         <textarea rows="10" cols="50" id="pointList" name="pointList" onchange="parsePointsListFromDom()">[]</textarea>
         </form>
     </div>
+
+    <div class="row">
+        <div class="span11 offset1">
+            <form id="transformForm">
+                <textarea rows="3" cols="10" id="transformMatrix" name="transformMatrix" placeholder="[1,0,0,1]"></textarea>
+                <a class="btn btn-primary" onClick="transformPointsClick()">Transform</a>
+            </form>
+
+        </div>
+    </div>
+
 
 
 </template>

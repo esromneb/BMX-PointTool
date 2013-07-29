@@ -237,3 +237,33 @@ updateImage = function()
 
     reRenderPoints();
 }
+
+transformPointsClick = function()
+{
+    var string = $('#transformMatrix').val();
+
+    var transformMatrix;
+    try{
+        transformMatrix = JSON.parse(string);
+        transformPoints(pointArray, transformMatrix);
+        reRenderPoints();
+        updatePointsListDom();
+
+    }catch(e)
+    {
+        console.log('something is wrong with your transform array.  try jsonlint.com');
+        return;
+    }
+
+
+}
+
+// transforms each point in coordSet using the provided 2 dimensional matrix
+// transform occurs in place; coordSet is overwritten with new points
+transformPoints = function(coordSet, matrix)
+{
+    for(var i = 0; i < coordSet.length; i++)
+    {
+        vec2.transformMat2(coordSet[i], coordSet[i], matrix);
+    }
+}

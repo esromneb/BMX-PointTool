@@ -9,6 +9,7 @@
 {{/constant}}
 {{/isolate}}
 {{> controls}}
+{{> readme}}
 
 </body>
 
@@ -64,4 +65,45 @@
 
 
 
+</template>
+
+<template name="readme">
+    <div class="span11 offset1">
+    <h2>BMX-PointTool</h2>
+    <h3>Introduction</h3>
+        <p>This tool allows you to trace lines on images, or build vector art for games.  You can also apply matrix transforms to the list of points.  This is very much a tool I made for myself.  Therefor some things may not make sense or be useful to you.</p>
+        <p>Source can be found here <a href="https://github.com/esromneb/BMX-PointTool">https://github.com/esromneb/BMX-PointTool</a></p>
+
+
+    <h3>Usage</h3>
+    <p>Click to draw points.</p>
+        <ul>
+            <li>The 'connect points' checkbox is only for rendering and does not alter any of the numbers on the page.</li>
+            <li>The box on the right will update each time you click with a json array of the points.  Visit <a href="http://jsonlint.com/">http://jsonlint.com/</a> to format or unformat this list.</li>
+            <li>The delete 1 removes the last point</li>
+            <li>If you edit the point box, and blur the canvas will re-render</li>
+            <li>The box on the left will load an image from anywhere on the web into the canvas.  Sometimes the image doesn't load right away to click and add a new point and it might appear.</li>
+            <li>Update the x,y,scale params right below and the image will respond after you blur the input box.  This field is also json</li>
+            <li>The transform box is used to apply a transform matrix against the points.  You can use either a 2d or 3d matrix.  The 3d matrix is rotated in a weird way, read the note on this page: <a href="http://glmatrix.net/">http://glmatrix.net/</a></li>
+            <li>All input boxes are saved to local storage.  If you refresh the page, simply press 'render' to display your last points</li>
+        </ul>
+
+
+    <h3>FAQ</h3>
+        <ul>
+            <li>Where is 0,0? - It's in the upper left, I am planning to make an option to have 0,0 at the center with a much larger grid (ie not one point per pixel)</li>
+            <li>More questions? - mention me on twitter, or fork me on github</li>
+        </ul>
+
+    <h3>Meteor</h3>
+    <p>Yes this project uses meteor.js without really needing to.  This is because I really love the easy development cycle.  Also free deploy to meteor.com doesn't hurt</p>
+
+
+    <h3>Author</h3>
+    <p>I'm Ben Morse.  Follow <a href="https://twitter.com/benathon">@Benathon</a> on twitter.</p>
+
+        <br>
+        <br>
+        <br>
+    </div>
 </template>

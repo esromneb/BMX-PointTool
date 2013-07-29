@@ -210,6 +210,10 @@ loadImageFromUrl = function()
     updateImage();
 
     stage.update();
+
+    // timing bug: only wait 1 second for the image to load
+    // clicking to add a new point will also draw the canvas (and show the image) if this fails
+    setTimeout(function(){stage.update()}, 1000);
 }
 
 var renderImage = function()

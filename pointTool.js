@@ -262,8 +262,25 @@ transformPointsClick = function()
 // transform occurs in place; coordSet is overwritten with new points
 transformPoints = function(coordSet, matrix)
 {
+    if( matrix.length == 4 )
+        transformPointsMat2(coordSet, matrix);
+    else if( matrix.length == 9 )
+        transformPointsMat3(coordSet, matrix);
+}
+
+transformPointsMat2 = function(coordSet, matrix)
+{
     for(var i = 0; i < coordSet.length; i++)
     {
         vec2.transformMat2(coordSet[i], coordSet[i], matrix);
     }
 }
+
+transformPointsMat3 = function(coordSet, matrix)
+{
+    for(var i = 0; i < coordSet.length; i++)
+    {
+        vec2.transformMat3(coordSet[i], coordSet[i], matrix);
+    }
+}
+

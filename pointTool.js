@@ -1,6 +1,17 @@
 // variables or settings
 connectPoints = true;
 imageUrl = null;
+
+//Transform to/from center matrices
+centerToTopLeft = [1,0,0,
+					0,1,0,
+					960/2,400/2,1];
+
+topLeftToCenter = [1,0,0,
+					0,1,0,
+					-960/2,-400/2,1];
+
+// what coord system is this in?
 pointArray = [];
 
 
@@ -19,13 +30,20 @@ setupEasel = function() {
     // create a stage object to work with the canvas. This is the top level node in the display list:
     stage = new createjs.Stage(canvas);
     window.stage = stage;
+	addCenterPoint();
 
 
 
     stage.onMouseMove = function(evt) {
         //
-        $('#mouseCoords').html('x: ' + evt.stageX + ' y: ' + evt.stageY);
 
+
+		var vec = [evt.stageX, evt.stageY];
+		var vecOut = [];
+
+		vec2.transformMat3(vecOut, vec,  topLeftToCenter);
+
+		$('#mouseCoords').html('x: ' + vecOut[0] + ' y: ' + vecOut[1]);
 
     };
 
@@ -87,6 +105,9 @@ function reRenderPoints()
     // add the image first (so it's backgrounded) if present
     renderImage();
 
+	// render center
+	addCenterPoint();
+
     pointObjectArray = [];
 
     for( var i in pointArray )
@@ -137,6 +158,16 @@ function addGraphicsPoint(x,y)
     }
 }
 
+function addCenterPoint(){
+	var centerPoint = new createjs.Shape();
+	stylePoint(centerPoint, {'color':'#00F', 'size':2});
+	stage.addChild(centerPoint);
+	centerPoint.x = 960/2;
+	centerPoint.y = 400/2;
+	stage.update();
+
+}
+
 function getPoint() {
 
 //    var i = 0;
@@ -166,7 +197,10 @@ function stylePoint(p, options)
 function updatePointsListDom()
 {
     // use val NOT html
-    $('#pointList').val(JSON.stringify(pointArray));
+	var pointArrayCopy = JSON.parse(JSON.stringify(pointArray));
+	transformPointsMat3(pointArrayCopy, topLeftToCenter);
+	$('#pointList').val(JSON.stringify(pointArrayCopy));
+
 }
 
 parsePointsListFromDom = function()
@@ -175,6 +209,7 @@ parsePointsListFromDom = function()
 
     try{
         pointArray = JSON.parse(string);
+		transformPointsMat3(pointArray, centerToTopLeft);
         reRenderPoints();
     }catch(e)
     {

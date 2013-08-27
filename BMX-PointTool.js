@@ -26,6 +26,23 @@ if (Meteor.isClient) {
                 {
                     connectPoints = false;
                 }
+
+                reRenderPoints();
+            }
+        );
+
+        $('#centerIsZero:checkbox').change(
+            function(e){
+
+                if ($(this).attr("checked")) {
+                    centerIsZero = true;
+                }
+                else
+                {
+                    centerIsZero = false;
+                }
+
+                reRenderPoints();
             }
         );
 

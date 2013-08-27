@@ -1,5 +1,6 @@
 // variables or settings
 connectPoints = true;
+centerIsZero = true;
 imageUrl = null;
 
 //Transform to/from center matrices
@@ -41,9 +42,10 @@ setupEasel = function() {
 		var vec = [evt.stageX, evt.stageY];
 		var vecOut = [];
 
-		vec2.transformMat3(vecOut, vec,  topLeftToCenter);
+        if( centerIsZero )
+		  vec2.transformMat3(vec, vec,  topLeftToCenter);
 
-		$('#mouseCoords').html('x: ' + vecOut[0] + ' y: ' + vecOut[1]);
+		$('#mouseCoords').html('x: ' + vec[0] + ' y: ' + vec[1]);
 
     };
 
@@ -77,13 +79,18 @@ var handleStageClick = function(e)
         var x = e.pageX-$("#testCanvas").offset().left;
         var y = e.pageY-$("#testCanvas").offset().top;
 
+        var vec = [x, y];
+
         console.log('x: ' + x + ' y: ' + y);
 
+        if( centerIsZero )
+          vec2.transformMat3(vec, vec,  topLeftToCenter);
+
         // add point to stage
-        addGraphicsPoint(x,y);
+        addGraphicsPoint(vec[0],vec[1]);
 
         // add to tracking array
-        pointArray.push([x,y]);
+        pointArray.push(vec);
 
         // render canvas
         stage.update();
@@ -96,7 +103,7 @@ var handleStageClick = function(e)
 
 
 // redraws the scene
-function reRenderPoints()
+reRenderPoints = function()
 {
 //    console.log('rerendering');
     stage.clear();
@@ -106,13 +113,14 @@ function reRenderPoints()
     renderImage();
 
 	// render center
-	addCenterPoint();
+    if( centerIsZero )
+	   addCenterPoint();
 
     pointObjectArray = [];
 
     for( var i in pointArray )
     {
-        var p = pointArray[i];
+        var p = JSON.parse(JSON.stringify(pointArray[i]));
 
         addGraphicsPoint(p[0], p[1]);
     }
@@ -139,7 +147,16 @@ function addGraphicsPoint(x,y)
     // create graphics object
     var p = pointObjectArray[getPoint()];
 
-    // position it
+    
+
+    if( centerIsZero ){
+        var transform = [x,y]; 
+        vec2.transformMat3(transform, transform,  centerToTopLeft);
+        x = transform[0];
+        y = transform[1];
+      }
+
+      // position it
     p.x = x;
     p.y = y;
 
@@ -198,7 +215,6 @@ function updatePointsListDom()
 {
     // use val NOT html
 	var pointArrayCopy = JSON.parse(JSON.stringify(pointArray));
-	transformPointsMat3(pointArrayCopy, topLeftToCenter);
 	$('#pointList').val(JSON.stringify(pointArrayCopy));
 
 }
@@ -209,7 +225,6 @@ parsePointsListFromDom = function()
 
     try{
         pointArray = JSON.parse(string);
-		transformPointsMat3(pointArray, centerToTopLeft);
         reRenderPoints();
     }catch(e)
     {
